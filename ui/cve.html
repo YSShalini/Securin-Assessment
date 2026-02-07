@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVE Details</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+
+    <div class="cve-details">
+      <h2 id="title">CVE ID</h2>
+      <p id="desc">Description of the CVE goes here.</p>
+    </div>
+
+    <div class="cve-details">
+  <h3>CVSS v2 Metrics</h3>
+  <div class="metric-box">
+    <p>Severity: <span id="severity"></span></p>
+    <p>Score: <span id="score"></span></p>
+    <p>Vector String: <span id="vector"></span></p>
+  </div>
+
+      <table class="cvss-table">
+        <thead>
+          <tr>
+            <th>Access Vector</th>
+            <th>Access Complexity</th>
+            <th>Authentication</th>
+            <th>Confidentiality</th>
+            <th>Integrity</th>
+            <th>Availability</th>
+          </tr>
+        </thead>
+        <tbody id="cvssRow"></tbody>
+      </table>
+    </div>
+
+    <div class="cve-details">
+      <h3>Scores:</h3>
+      <div class="metric-box">
+        <p>Exploitability Score: <span id="exploit"></span></p>
+        <p>Impact Score: <span id="impact"></span></p>
+      </div>
+
+    </div>
+
+    <div class="cve-details">
+      <h3>CPE</h3>
+      <table class="cpe-table">
+        <thead>
+          <tr>
+            <th style="min-width: 150px;">Criteria</th>
+            <th style="min-width: 150px;">Match ID</th>
+            <th style="min-width: 80px;">Vulnerable</th>
+
+          </tr>
+        </thead>
+        <tbody id="cpeTable"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    const id = new URLSearchParams(window.location.search).get("id");
+
+    fetch(`http://localhost:8000/cves/${id}`)
+      .then(res => res.json())
+      .then(cve => {
+        const metric = cve.raw_metrics.cvssMetricV2[0];
+
+        document.getElementById("title").innerText = cve.cve_id;
+        document.getElementById("desc").innerText = cve.description;
+
+        document.getElementById("severity").innerText = metric.baseSeverity;
+        document.getElementById("score").innerText = metric.cvssData.baseScore;
+        document.getElementById("vector").innerText = metric.cvssData.vectorString;
+
+        document.getElementById("cvssRow").innerHTML = `
+          <tr>
+            <td>${metric.cvssData.accessVector}</td>
+            <td>${metric.cvssData.accessComplexity}</td>
+            <td>${metric.cvssData.authentication}</td>
+            <td>${metric.cvssData.confidentialityImpact}</td>
+            <td>${metric.cvssData.integrityImpact}</td>
+            <td>${metric.cvssData.availabilityImpact}</td>
+          </tr>
+        `;
+
+        document.getElementById("exploit").innerText = metric.exploitabilityScore;
+        document.getElementById("impact").innerText = metric.impactScore;
+
+        const cpeBody = document.getElementById("cpeTable");
+        let cpeHTML = "";
+        cve.cpe[0].nodes[0].cpeMatch.forEach(c => {
+          cpeHTML += `
+            <tr>
+              <td>${c.criteria}</td>
+              <td>${c.matchCriteriaId}</td>
+              <td>${c.vulnerable ? 'Yes' : 'No'}</td>
+            </tr>
+          `;
+        });
+        cpeBody.innerHTML = cpeHTML;
+
+      });
+  </script>
+</body>
+</html>
