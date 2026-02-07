@@ -1,4 +1,3 @@
-
 🛡️ NVD CVE Management System
 
 A full-stack application to ingest, store, filter, and visualize CVE (Common Vulnerabilities and Exposures) data from the NVD (National Vulnerability Database) using the official NVD CVE API.
@@ -6,103 +5,51 @@ A full-stack application to ingest, store, filter, and visualize CVE (Common Vul
 This project demonstrates API consumption, batch synchronization, data cleansing, backend filtering, pagination, sorting, frontend visualization, and unit testing.
 
 📌 Features
-🔹 Backend
+      🔹 Backend
+      
+      Consume CVE data from NVD CVE API v2.0
+      Chunked data ingestion using startIndex & resultsPerPage
+      Data cleansing & de-duplication     
+      Store CVE data in PostgreSQL    
+      REST APIs built using FastAPI  
+      
+      Server-side:    
+          Pagination      
+          Sorting (published / last modified dates)      
+          Filtering by:      
+          CVE ID      
+          CVE Year  
+          CVSS Score (v2 / v3)   
+          Last modified in N days
+          
+      Periodic batch synchronization using APScheduler      
+      Auto-generated API documentation using Swagger (OpenAPI)      
+      Unit tests using pytest
 
-Consume CVE data from NVD CVE API v2.0
-
-Chunked data ingestion using startIndex & resultsPerPage
-
-Data cleansing & de-duplication
-
-Store CVE data in PostgreSQL
-
-REST APIs built using FastAPI
-
-Server-side:
-
-Pagination
-
-Sorting (published / last modified dates)
-
-Filtering by:
-
-CVE ID
-
-CVE Year
-
-CVSS Score (v2 / v3)
-
-Last modified in N days
-
-Periodic batch synchronization using APScheduler
-
-Auto-generated API documentation using Swagger (OpenAPI)
-
-Unit tests using pytest
-
-🔹 Frontend
-
-Built using HTML, CSS, JavaScript
-
-CVE List page:
-
-Total record count
-
-Paginated table
-
-Results per page (10 / 50 / 100)
-
-Sorting support
-
-CVE Detail page:
-
-CVE description
-
-CVSS v2 metrics
-
-Scores breakdown
-
-CPE details in tabular format
+      🔹 Frontend
+      
+      Built using HTML, CSS, JavaScript   
+      
+      CVE List page:     
+          Total record count     
+          Paginated table      
+          Results per page (10 / 50 / 100)      
+          Sorting support      
+      CVE Detail page:     
+          CVE description     
+          CVSS v2 metrics     
+          Scores breakdown      
+          CPE details in tabular format
 
 🏗️ Tech Stack
-Layer	Technology
-Backend	FastAPI
-Database	PostgreSQL
-ORM	SQLAlchemy
-Scheduler	APScheduler
-Frontend	HTML, CSS, JavaScript
-Testing	Pytest
-API Source	NVD CVE API v2.0
-
-
-📂 Project Structure
-Securin Labs Assignment/
-│
-├── app/
-│   ├── main.py
-│   ├── config.py
-│   ├── database.py
-│   ├── models/
-│   │   └── cve.py
-│   ├── routes/
-│   │   └── cves.py
-│   ├── services/
-│   │   ├── nvd_sync.py
-│   │   └── scheduler.py
-│
-├── ui/
-│   ├── index.html
-│   ├── cve.html
-│   ├── script.js
-│   └── styles.css
-│
-├── tests/
-│   └── test_cves.py
-│
-├── sync_cves.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+      Layer	Technology
+      Backend	FastAPI
+      Database	PostgreSQL
+      ORM	SQLAlchemy
+      Scheduler	APScheduler
+      Frontend	HTML, CSS, JavaScript
+      Testing	Pytest
+      API Source	NVD CVE API v2.0
 
 ⚙️ Setup & Installation
 1️⃣ Clone the repository
@@ -171,11 +118,8 @@ Open browser:
 http://localhost:5500/index.html
 
 🔁 Scheduler (Periodic Sync)
-
 Configured using APScheduler
-
 Runs automatically on FastAPI startup
-
 Supports incremental CVE updates based on last modified date
 
 📑 API Endpoints
